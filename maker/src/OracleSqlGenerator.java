@@ -28,4 +28,9 @@ public class OracleSqlGenerator {
         query += "is " + value;
         return this;
     }
+
+    public OracleSqlGenerator is(String value) {
+        query += "is " + "'" + value + "'";
+        return this;
+    }
 }
