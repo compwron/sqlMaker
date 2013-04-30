@@ -1,5 +1,7 @@
 package src;
 
+import test.FooTable;
+
 public class OracleSqlGenerator {
     private String query = "";
 
@@ -15,5 +17,15 @@ public class OracleSqlGenerator {
 
     public String toString() {
         return query + ";";
+    }
+
+    public OracleSqlGenerator where(FooTable barColumn) {
+        query += " where " + barColumn.name() + " ";
+        return this;
+    }
+
+    public OracleSqlGenerator is(int value) {
+        query += "is " + value;
+        return this;
     }
 }
