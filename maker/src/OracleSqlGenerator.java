@@ -15,7 +15,7 @@ public class OracleSqlGenerator {
         return this;
     }
 
-    public String toString() {
+    public String build() {
         return query + ";";
     }
 

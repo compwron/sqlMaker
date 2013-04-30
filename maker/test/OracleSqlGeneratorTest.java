@@ -17,16 +17,16 @@ public class OracleSqlGeneratorTest {
 
     @Test
     public void generatorShouldWriteSelectAllStatement() {
-        assertThat(generator.selectAll().from(FooTable.TableName).toString(), is("select * from myTableName;"));
+        assertThat(generator.selectAll().from(FooTable.TableName).build(), is("select * from myTableName;"));
     }
 
     @Test
     public void shouldSelectWhereColumnValueIs1(){
-        assertThat(generator.selectAll().from(FooTable.TableName).where(FooTable.BarColumn).is(1).toString(), is("select * from myTableName where BarColumn is 1;"));
+        assertThat(generator.selectAll().from(FooTable.TableName).where(FooTable.BarColumn).is(1).build(), is("select * from myTableName where BarColumn is 1;"));
     }
 
     @Test
     public void shouldSelectWhereColumnValueIsAString(){
-        assertThat(generator.selectAll().from(FooTable.TableName).where(FooTable.BarColumn).is("a value").toString(), is("select * from myTableName where BarColumn is 'a value';"));
+        assertThat(generator.selectAll().from(FooTable.TableName).where(FooTable.BarColumn).is("a value").build(), is("select * from myTableName where BarColumn is 'a value';"));
     }
 }
