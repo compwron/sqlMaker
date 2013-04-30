@@ -1,15 +1,19 @@
 package src;
 
 public class OracleSqlGenerator {
+    private String query = "";
+
     public OracleSqlGenerator selectAll() {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        query += "select * ";
+        return this;
     }
 
     public OracleSqlGenerator from(String tableName) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        query += "from " + tableName;
+        return this;
     }
 
-    public String toString(){
-        return "";
+    public String toString() {
+        return query + ";";
     }
 }
