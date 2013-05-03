@@ -22,8 +22,8 @@ public class OracleSqlGenerator implements SqlGenerator {
         return query + ";";
     }
 
-    public OracleSqlGenerator where(FooTable barColumn) {
-        query += " where " + barColumn.name() + " ";
+    public OracleSqlGenerator where(Enum columnName) {
+        query += " where " + columnName.name() + " ";
         return this;
     }
 

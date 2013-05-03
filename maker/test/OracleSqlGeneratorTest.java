@@ -37,6 +37,6 @@ public class OracleSqlGeneratorTest {
 
     @Test
     public void shouldUpdateTable1WithDataFromTable2(){
-        assertThat(generator.update(BarTable.Tablename, BarTable.ColumnB).with('b').where(BarTable.ColumnA).is('a'), is("update barTableName ColumnB with 'b' where barTableName.columnA is 'a';"));
+        assertThat(generator.update(BarTable.Tablename, BarTable.ColumnB).with("b").where(BarTable.ColumnA).is("a").build(), is("update barTableName ColumnB with 'b' where barTableName.columnA is 'a';"));
     }
 }
