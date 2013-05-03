@@ -1,5 +1,6 @@
 package src;
 
+import test.BarTable;
 import test.FooTable;
 
 import java.util.ArrayList;
@@ -56,5 +57,13 @@ public class OracleSqlGenerator implements SqlGenerator {
 
     private boolean isLastColumnInList(ArrayList<String> stringColumnNames, String columnName) {
         return columnName.equals(stringColumnNames.get(stringColumnNames.size() - 1));
+    }
+
+    public OracleSqlGenerator update(BarTable tablename, BarTable columnB) {
+        return this;
+    }
+
+    public OracleSqlGenerator with(String data) {
+        return this;
     }
 }
