@@ -1,5 +1,6 @@
 package src;
 
+import com.sun.deploy.util.StringUtils;
 import test.BarTable;
 import test.FooTable;
 
@@ -47,16 +48,8 @@ public class OracleSqlGenerator implements SqlGenerator {
             stringColumnNames.add(column.name());
         }
 
-//        StringUtils.join(stringColumnNames, ", "); // get a different java and use this
         query += "select ";
-        for (String columnName : stringColumnNames) {
-            query += columnName;
-            if (!isLastColumnInList(stringColumnNames, columnName)) {
-                query += ", ";
-            } else {
-                query += space;
-            }
-        }
+        query += StringUtils.join(stringColumnNames, ", ") + " ";
         return this;
     }
 
