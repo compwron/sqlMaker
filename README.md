@@ -5,6 +5,7 @@ A tiny DSL for writing sql queries
 
 Tables (table name and column names) are kept in the code as enums
 
+The current implementation has the convention of an enum with the values as column names, and a field called tableName.
 
 Todo
 ===========
