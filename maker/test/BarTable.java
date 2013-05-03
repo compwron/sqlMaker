@@ -1,5 +1,6 @@
 package test;
 
 public enum BarTable {
-    ColumnB, Tablename, ColumnA
+    ColumnB, ColumnA;
+    public static String TableName = "barTableName";
 }

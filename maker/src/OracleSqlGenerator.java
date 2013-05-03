@@ -59,11 +59,13 @@ public class OracleSqlGenerator implements SqlGenerator {
         return columnName.equals(stringColumnNames.get(stringColumnNames.size() - 1));
     }
 
-    public OracleSqlGenerator update(BarTable tablename, BarTable columnB) {
+    public OracleSqlGenerator update(String tableName, BarTable columnB) {
+        query += "update " + tableName + " " + columnB.name() + " ";
         return this;
     }
 
     public OracleSqlGenerator with(String data) {
+        query += "with '" + data + "'";
         return this;
     }
 }
