@@ -1,6 +1,6 @@
 package test;
 
 public enum FooTable {
-    BarColumn, BazColumn;
-    public static String TableName = "myTableName";
+  BarColumn, BazColumn;
+  public static final String tableName = "myTableName";
 }

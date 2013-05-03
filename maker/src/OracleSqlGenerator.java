@@ -6,6 +6,10 @@ import test.FooTable;
 import java.util.ArrayList;
 
 public class OracleSqlGenerator implements SqlGenerator {
+    private static final String sqlStringQuote = "'";
+    private static final String endLine = ";";
+    private static final String space = " ";
+
     private String query = "";
 
     public OracleSqlGenerator selectAll() {
@@ -19,11 +23,11 @@ public class OracleSqlGenerator implements SqlGenerator {
     }
 
     public String build() {
-        return query + ";";
+        return query + endLine;
     }
 
     public OracleSqlGenerator where(Enum columnName) {
-        query += " where " + columnName.name() + " ";
+        query += " where " + columnName.name() + space;
         return this;
     }
 
@@ -33,23 +37,23 @@ public class OracleSqlGenerator implements SqlGenerator {
     }
 
     public OracleSqlGenerator is(String value) {
-        query += "is " + "'" + value + "'";
+        query += "is " + sqlStringQuote + value + sqlStringQuote;
         return this;
     }
 
     public OracleSqlGenerator select(FooTable... columnNames) {
         ArrayList<String> stringColumnNames = new ArrayList<String>();
-        for(FooTable column : columnNames){
+        for (FooTable column : columnNames) {
             stringColumnNames.add(column.name());
         }
 
         query += "select ";
-        for(String columnName : stringColumnNames){
+        for (String columnName : stringColumnNames) {
             query += columnName;
-            if ( ! isLastColumnInList(stringColumnNames, columnName)){
+            if (!isLastColumnInList(stringColumnNames, columnName)) {
                 query += ", ";
             } else {
-                query += " ";
+                query += space;
             }
         }
         return this;
@@ -60,12 +64,17 @@ public class OracleSqlGenerator implements SqlGenerator {
     }
 
     public OracleSqlGenerator update(String tableName, BarTable columnB) {
-        query += "update " + tableName + " " + columnB.name() + " ";
+        query += "update " + tableName + space + columnB.name() + space;
         return this;
     }
 
     public OracleSqlGenerator with(String data) {
-        query += "with '" + data + "'";
+        query += "with '" + data + sqlStringQuote;
+        return this;
+    }
+
+    public OracleSqlGenerator isEqualTo(String value) {
+        query += "= " + sqlStringQuote + value + sqlStringQuote;
         return this;
     }
 }
