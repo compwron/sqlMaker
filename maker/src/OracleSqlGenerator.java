@@ -53,10 +53,6 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    private boolean isLastColumnInList(ArrayList<String> stringColumnNames, String columnName) {
-        return columnName.equals(stringColumnNames.get(stringColumnNames.size() - 1));
-    }
-
     public OracleSqlGenerator update(String tableName, BarTable columnB) {
         query += "update " + tableName + space + columnB.name() + space;
         return this;
