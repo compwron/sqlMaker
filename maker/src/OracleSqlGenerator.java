@@ -2,7 +2,9 @@ package src;
 
 import test.FooTable;
 
-public class OracleSqlGenerator {
+import java.util.ArrayList;
+
+public class OracleSqlGenerator implements SqlGenerator {
     private String query = "";
 
     public OracleSqlGenerator selectAll() {
@@ -32,5 +34,27 @@ public class OracleSqlGenerator {
     public OracleSqlGenerator is(String value) {
         query += "is " + "'" + value + "'";
         return this;
+    }
+
+    public OracleSqlGenerator select(FooTable... columnNames) {
+        ArrayList<String> stringColumnNames = new ArrayList<String>();
+        for(FooTable column : columnNames){
+            stringColumnNames.add(column.name());
+        }
+
+        query += "select ";
+        for(String columnName : stringColumnNames){
+            query += columnName;
+            if ( ! isLastColumnInList(stringColumnNames, columnName)){
+                query += ", ";
+            } else {
+                query += " ";
+            }
+        }
+        return this;
+    }
+
+    private boolean isLastColumnInList(ArrayList<String> stringColumnNames, String columnName) {
+        return columnName.equals(stringColumnNames.get(stringColumnNames.size() - 1));
     }
 }

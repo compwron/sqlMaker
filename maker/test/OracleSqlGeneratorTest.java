@@ -29,4 +29,12 @@ public class OracleSqlGeneratorTest {
     public void shouldSelectWhereColumnValueIsAString(){
         assertThat(generator.selectAll().from(FooTable.TableName).where(FooTable.BarColumn).is("a value").build(), is("select * from myTableName where BarColumn is 'a value';"));
     }
+
+    @Test
+    public void shouldSelectMultipleColumns(){
+        assertThat(generator.select(FooTable.BarColumn, FooTable.BazColumn).from(FooTable.TableName).build(), is("select BarColumn, BazColumn from myTableName;"));
+    }
+
+    @Test
+    public void shouldUpdateTable1WithDataFromTable2(){}
 }
