@@ -55,4 +55,11 @@ public class OracleSqlGeneratorTest {
         String barExpectedSql = "select * from barTableName where ColumnA = 'foo';";
         assertThat(generator.selectAll().from(BarTable.tableName).where(BarTable.ColumnA).isEqualTo("foo").build(), is(barExpectedSql));
     }
+
+    @Test
+    public void shouldComposeOrderByWIthMultipleOrderers(){
+        String expectedOrderBy = "order by ColumnA, ColumnB;";
+        assertThat(generator.orderBy(BarTable.ColumnA, BarTable.ColumnB).build(), is(expectedOrderBy));
+
+    }
 }

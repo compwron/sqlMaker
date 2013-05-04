@@ -1,7 +1,6 @@
 package src;
 
 import com.sun.deploy.util.StringUtils;
-import test.BarTable;
 import test.FooTable;
 
 import java.util.ArrayList;
@@ -43,17 +42,12 @@ public class OracleSqlGenerator implements SqlGenerator {
     }
 
     public OracleSqlGenerator select(FooTable... columnNames) {
-        ArrayList<String> stringColumnNames = new ArrayList<String>();
-        for (FooTable column : columnNames) {
-            stringColumnNames.add(column.name());
-        }
-
         query += "select ";
-        query += StringUtils.join(stringColumnNames, ", ") + " ";
+        query += StringUtils.join(transformColumnsToStrings(columnNames), ", ") + " ";
         return this;
     }
 
-    public OracleSqlGenerator update(String tableName, BarTable columnB) {
+    public OracleSqlGenerator update(String tableName, Enum columnB) {
         query += "update " + tableName + space + columnB.name() + space;
         return this;
     }
@@ -66,5 +60,19 @@ public class OracleSqlGenerator implements SqlGenerator {
     public OracleSqlGenerator isEqualTo(String value) {
         query += "= " + sqlStringQuote + value + sqlStringQuote;
         return this;
+    }
+
+    public OracleSqlGenerator orderBy(Enum... columns) {
+        query += "order by ";
+        query += StringUtils.join(transformColumnsToStrings(columns), ", ");
+        return this;
+    }
+
+    private ArrayList<String> transformColumnsToStrings(Enum... columnNames){
+        ArrayList<String> stringColumnNames = new ArrayList<String>();
+        for (Enum column : columnNames) {
+            stringColumnNames.add(column.name());
+        }
+        return stringColumnNames;
     }
 }
