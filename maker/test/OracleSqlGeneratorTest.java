@@ -60,6 +60,14 @@ public class OracleSqlGeneratorTest {
     public void shouldComposeOrderByWIthMultipleOrderers(){
         String expectedOrderBy = "order by ColumnA, ColumnB;";
         assertThat(generator.orderBy(BarTable.ColumnA, BarTable.ColumnB).build(), is(expectedOrderBy));
-
     }
+
+    @Test
+    public void shouldMultiSelectMultiWhereUnionAll(){
+//    select a, b from d, e where g = h and j = k union all
+        String expected = "select ColumnA, ColumnB from barTableName where ColumnA = 'foo' and ColumnB = 'bar' union all;";
+        assertThat(generator.select(BarTable.ColumnA, BarTable.ColumnB).from(BarTable.tableName).where(BarTable.ColumnA).isEqualTo("foo").and(BarTable.ColumnB).isEqualTo("bar").unionAll().build(), is(expected));
+    }
+
+//    what is <> in oracle?
 }

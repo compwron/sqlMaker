@@ -1,7 +1,6 @@
 package src;
 
 import com.sun.deploy.util.StringUtils;
-import test.FooTable;
 
 import java.util.ArrayList;
 
@@ -41,14 +40,14 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    public OracleSqlGenerator select(FooTable... columnNames) {
+    public OracleSqlGenerator select(Enum... columnNames) {
         query += "select ";
         query += StringUtils.join(transformColumnsToStrings(columnNames), ", ") + " ";
         return this;
     }
 
-    public OracleSqlGenerator update(String tableName, Enum columnB) {
-        query += "update " + tableName + space + columnB.name() + space;
+    public OracleSqlGenerator update(String tableName, Enum column) {
+        query += "update " + tableName + space + column.name() + space;
         return this;
     }
 
@@ -74,5 +73,15 @@ public class OracleSqlGenerator implements SqlGenerator {
             stringColumnNames.add(column.name());
         }
         return stringColumnNames;
+    }
+
+    public OracleSqlGenerator and(Enum columnName) {
+        query += " and " + columnName + space;
+        return this;
+    }
+
+    public OracleSqlGenerator unionAll() {
+        query += " union all";
+        return this;
     }
 }
