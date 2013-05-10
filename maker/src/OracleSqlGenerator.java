@@ -21,10 +21,6 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    public String build() {
-        return query + endLine;
-    }
-
     public OracleSqlGenerator where(Enum columnName) {
         query += " where " + columnName.name() + space;
         return this;
@@ -108,5 +104,19 @@ public class OracleSqlGenerator implements SqlGenerator {
     public OracleSqlGenerator literal(String literalSql) {
         query += literalSql;
         return this;
+    }
+
+    public OracleSqlGenerator underscoreSeparated(String tableName, Enum... columnNames) {
+        query += StringUtils.join(transformColumnsToStrings(columnNames), ", " + tableName + "_");
+
+        return this;
+    }
+
+    public String build() {
+        return query + endLine;
+    }
+
+    public String buildWithoutSemicolon() {
+        return query;
     }
 }

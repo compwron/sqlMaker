@@ -16,6 +16,12 @@ public class OracleSqlGeneratorTest {
     }
 
     @Test
+    public void shouldCreateUnderscoreSeparatedAliasesForColumns(){
+        String expectedAliases = "BarTable_ColumnA, BarTable_ColumnB";
+        assertThat(generator.underscoreSeparated(BarTable.tableName, BarTable.ColumnA, BarTable.ColumnB).buildWithoutSemicolon(), is(expectedAliases));
+    }
+
+    @Test
     public void shouldAllowCustomSqlInTheMiddleOfStatement(){
         String expectedNonsense = "select * from something nonsensical where BarColumn = 'bar';";
         assertThat(generator.selectAll().literal("from something nonsensical").where(FooTable.BarColumn).isEqualTo("bar").build(), is(expectedNonsense));
