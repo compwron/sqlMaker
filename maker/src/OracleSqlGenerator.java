@@ -84,4 +84,23 @@ public class OracleSqlGenerator implements SqlGenerator {
         query += " union all";
         return this;
     }
+
+    public OracleSqlGenerator selectAllByName(Enum[] columnNames) {
+        query += "select " + StringUtils.join(transformColumnsToStrings(columnNames), ", ") + space;
+        return this;
+    }
+
+    public String parameterizedInsert(String tableName, Enum[] columns) {
+        return "insert into " + tableName + " (" + StringUtils.join(transformColumnsToStrings(columns), ", ") + ")" + valuesFor(columns);
+    }
+
+    private String valuesFor(Enum[] columns) {
+        String questionMarks = "";
+        for (int i = 0; i < columns.length -1 ; i++){
+            questionMarks += "?,";
+        }
+        questionMarks += "?";
+
+        return " values (" + questionMarks +")";
+    }
 }

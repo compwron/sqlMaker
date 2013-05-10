@@ -16,6 +16,12 @@ public class OracleSqlGeneratorTest {
     }
 
     @Test
+    public void parameterizedInsertOfAllValuesInTableShouldHaveSameNumberOfQuestionMarksAsFields(){
+        String expectedInsert = "insert into fooTableName (BarColumn, BazColumn) values (?,?)";
+        assertThat(generator.parameterizedInsert(FooTable.tableName, FooTable.values()), is(expectedInsert));
+    }
+
+    @Test
     public void generatorShouldWriteSelectAllStatement() {
         assertThat(generator.selectAll().from(FooTable.tableName).build(), is("select * from fooTableName;"));
     }
@@ -69,5 +75,9 @@ public class OracleSqlGeneratorTest {
         assertThat(generator.select(BarTable.ColumnA, BarTable.ColumnB).from(BarTable.tableName).where(BarTable.ColumnA).isEqualTo("foo").and(BarTable.ColumnB).isEqualTo("bar").unionAll().build(), is(expected));
     }
 
-//    what is <> in oracle?
+    @Test
+    public void shouldAddAllColumnsInTableEnum(){
+        String expected = "select ColumnA, ColumnB from barTableName;";
+        assertThat(generator.selectAllByName(BarTable.values()).from(BarTable.tableName).build(), is(expected));
+    }
 }
