@@ -17,7 +17,7 @@ public class OracleSqlGeneratorTest {
 
     @Test
     public void shouldCreateUnderscoreSeparatedAliasesForColumns(){
-        String expectedAliases = "BarTable_ColumnA, BarTable_ColumnB";
+        String expectedAliases = "barTableName_ColumnA, barTableName_ColumnB";
         assertThat(generator.underscoreSeparated(BarTable.tableName, BarTable.ColumnA, BarTable.ColumnB).buildWithoutSemicolon(), is(expectedAliases));
     }
 

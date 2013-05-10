@@ -107,9 +107,18 @@ public class OracleSqlGenerator implements SqlGenerator {
     }
 
     public OracleSqlGenerator underscoreSeparated(String tableName, Enum... columnNames) {
-        query += StringUtils.join(transformColumnsToStrings(columnNames), ", " + tableName + "_");
+        for (Enum column : columnNames){
+            query += tableName + "_" + column + ", ";
+        }
+
+        query = removeLastComma(query);
 
         return this;
+    }
+
+    private String removeLastComma(String s) {
+        s = s.trim();
+        return s.substring(0, s.length() - 1);
     }
 
     public String build() {
