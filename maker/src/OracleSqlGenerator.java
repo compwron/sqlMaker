@@ -90,8 +90,9 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    public String parameterizedInsert(String tableName, Enum[] columns) {
-        return "insert into " + tableName + " (" + StringUtils.join(transformColumnsToStrings(columns), ", ") + ")" + valuesFor(columns);
+    public OracleSqlGenerator parameterizedInsert(String tableName, Enum[] columns) {
+        query += "insert into " + tableName + " (" + StringUtils.join(transformColumnsToStrings(columns), ", ") + ")" + valuesFor(columns);
+        return this;
     }
 
     private String valuesFor(Enum[] columns) {
@@ -102,5 +103,10 @@ public class OracleSqlGenerator implements SqlGenerator {
         questionMarks += "?";
 
         return " values (" + questionMarks +")";
+    }
+
+    public OracleSqlGenerator literal(String literalSql) {
+        query += literalSql;
+        return this;
     }
 }

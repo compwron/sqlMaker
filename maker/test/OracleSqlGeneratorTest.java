@@ -16,9 +16,15 @@ public class OracleSqlGeneratorTest {
     }
 
     @Test
+    public void shouldAllowCustomSqlInTheMiddleOfStatement(){
+        String expectedNonsense = "select * from something nonsensical where BarColumn = 'bar';";
+        assertThat(generator.selectAll().literal("from something nonsensical").where(FooTable.BarColumn).isEqualTo("bar").build(), is(expectedNonsense));
+    }
+
+    @Test
     public void parameterizedInsertOfAllValuesInTableShouldHaveSameNumberOfQuestionMarksAsFields(){
         String expectedInsert = "insert into fooTableName (BarColumn, BazColumn) values (?,?)";
-        assertThat(generator.parameterizedInsert(FooTable.tableName, FooTable.values()), is(expectedInsert));
+        assertThat(generator.parameterizedInsert(FooTable.tableName, FooTable.values()).build(), is(expectedInsert));
     }
 
     @Test
