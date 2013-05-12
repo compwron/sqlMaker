@@ -22,6 +22,12 @@ public class OracleSqlGeneratorTest {
     }
 
     @Test
+    public void shouldCreateUnderscoreSeparatedAliasesForColumnsForAllColumnsInTable(){
+        String expectedAliases = "barTableName_ColumnA, barTableName_ColumnB";
+        assertThat(generator.underscoreSeparated(BarTable.tableName, BarTable.values()).buildWithoutSemicolon(), is(expectedAliases));
+    }
+
+    @Test
     public void shouldAllowCustomSqlInTheMiddleOfStatement(){
         String expectedNonsense = "select * from something nonsensical where BarColumn = 'bar';";
         assertThat(generator.selectAll().literal("from something nonsensical").where(FooTable.BarColumn).isEqualTo("bar").build(), is(expectedNonsense));
@@ -29,7 +35,7 @@ public class OracleSqlGeneratorTest {
 
     @Test
     public void parameterizedInsertOfAllValuesInTableShouldHaveSameNumberOfQuestionMarksAsFields(){
-        String expectedInsert = "insert into fooTableName (BarColumn, BazColumn) values (?,?)";
+        String expectedInsert = "insert into fooTableName (BarColumn, BazColumn) values (?,?);";
         assertThat(generator.parameterizedInsert(FooTable.tableName, FooTable.values()).build(), is(expectedInsert));
     }
 
