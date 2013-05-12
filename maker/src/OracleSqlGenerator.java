@@ -1,17 +1,26 @@
 package src;
 
-
 import java.util.ArrayList;
 
 public class OracleSqlGenerator implements SqlGenerator {
     private static final String sqlStringQuote = "'";
-    private static final String endLine = ";";
     private static final String space = " ";
 
     private String query = "";
 
     public OracleSqlGenerator selectAll() {
         query += "select * ";
+        return this;
+    }
+
+    public OracleSqlGenerator select(Enum... columnNames) {
+        query += "select ";
+        query += transformColumnsToStrings(columnNames) + space;
+        return this;
+    }
+
+    public OracleSqlGenerator selectAllByName(Enum[] columnNames) {
+        query += "select " + transformColumnsToStrings(columnNames) + space;
         return this;
     }
 
@@ -30,14 +39,13 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    public OracleSqlGenerator is(String value) {
-        query += "is " + sqlStringQuote + value + sqlStringQuote;
+    public OracleSqlGenerator isEqualTo(String value) {
+        query += "= " + sqlStringQuote + value + sqlStringQuote;
         return this;
     }
 
-    public OracleSqlGenerator select(Enum... columnNames) {
-        query += "select ";
-        query += transformColumnsToStrings(columnNames) + " ";
+    public OracleSqlGenerator is(String value) {
+        query += "is " + sqlStringQuote + value + sqlStringQuote;
         return this;
     }
 
@@ -51,28 +59,10 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    public OracleSqlGenerator isEqualTo(String value) {
-        query += "= " + sqlStringQuote + value + sqlStringQuote;
-        return this;
-    }
-
     public OracleSqlGenerator orderBy(Enum... columns) {
         query += "order by ";
         query += transformColumnsToStrings(columns);
         return this;
-    }
-
-    private String transformColumnsToStrings(Enum... columnNames) {
-        ArrayList<String> stringColumnNames = new ArrayList<String>();
-        for (Enum column : columnNames) {
-            stringColumnNames.add(column.name());
-        }
-        String queryWithExtraTrailingComma = "";
-        for (String columnName : stringColumnNames) {
-            queryWithExtraTrailingComma += columnName + ", ";
-        }
-
-        return queryWithExtraTrailingComma.trim().substring(0, queryWithExtraTrailingComma.length()-2);
     }
 
     public OracleSqlGenerator and(Enum columnName) {
@@ -85,11 +75,6 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    public OracleSqlGenerator selectAllByName(Enum[] columnNames) {
-        query += "select " + transformColumnsToStrings(columnNames) + space;
-        return this;
-    }
-
     public OracleSqlGenerator parameterizedInsert(String tableName, Enum[] columns) {
         query += "insert into " + tableName + " (" + transformColumnsToStrings(columns) + ")" + valuesFor(columns);
         return this;
@@ -97,12 +82,12 @@ public class OracleSqlGenerator implements SqlGenerator {
 
     private String valuesFor(Enum[] columns) {
         String questionMarks = "";
-        for (int i = 0; i < columns.length -1 ; i++){
+        for (int i = 0; i < columns.length - 1; i++) {
             questionMarks += "?,";
         }
         questionMarks += "?";
 
-        return " values (" + questionMarks +")";
+        return " values (" + questionMarks + ")";
     }
 
     public OracleSqlGenerator literal(String literalSql) {
@@ -111,13 +96,19 @@ public class OracleSqlGenerator implements SqlGenerator {
     }
 
     public OracleSqlGenerator selectAsTableNameUnderscoreColumnName(String tableName, Enum... columnNames) {
-        for (Enum column : columnNames){
+        for (Enum column : columnNames) {
             query += tableName + "_" + column + ", ";
         }
-
         query = removeLastComma(query);
-
         return this;
+    }
+
+    public String build() {
+        return query + ";";
+    }
+
+    public String buildWithoutSemicolon() {
+        return query;
     }
 
     private String removeLastComma(String s) {
@@ -125,12 +116,18 @@ public class OracleSqlGenerator implements SqlGenerator {
         return s.substring(0, s.length() - 1);
     }
 
-    public String build() {
-        return query + endLine;
+    private String transformColumnsToStrings(Enum... columnNames) {
+        ArrayList<String> stringColumnNames = new ArrayList<String>();
+        for (Enum column : columnNames) {
+            stringColumnNames.add(column.name());
+        }
+        String queryWithExtraTrailingComma = "";
+        for (String columnName : stringColumnNames) {
+            queryWithExtraTrailingComma += columnName + ", ";
+        }
+
+        return removeLastComma(queryWithExtraTrailingComma.trim());
     }
 
-    public String buildWithoutSemicolon() {
-        return query;
-    }
 
 }
