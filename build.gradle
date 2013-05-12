@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    def projects = ['maker']
+
+    main {
+        compileClasspath += configurations.provided
+
+        java {
+            srcDirs = projects.collect { project -> project + '/src' }
+        }
+    }
+
+    test {
+        java {
+            srcDirs = projects.collect { project -> project + '/test' }
+        }
+    }
+}
+
+idea {
+    module {
+        scopes.PROVIDED.plus += configurations.provided
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}

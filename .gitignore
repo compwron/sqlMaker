@@ -6,3 +6,4 @@ out
 *.ipr
 *.iws
 maker/test/BadSampleJava.java
+build
