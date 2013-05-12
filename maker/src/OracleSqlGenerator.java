@@ -1,6 +1,5 @@
 package src;
 
-import com.sun.deploy.util.StringUtils;
 
 import java.util.ArrayList;
 
@@ -38,7 +37,7 @@ public class OracleSqlGenerator implements SqlGenerator {
 
     public OracleSqlGenerator select(Enum... columnNames) {
         query += "select ";
-        query += StringUtils.join(transformColumnsToStrings(columnNames), ", ") + " ";
+        query += transformColumnsToStrings(columnNames) + " ";
         return this;
     }
 
@@ -59,16 +58,21 @@ public class OracleSqlGenerator implements SqlGenerator {
 
     public OracleSqlGenerator orderBy(Enum... columns) {
         query += "order by ";
-        query += StringUtils.join(transformColumnsToStrings(columns), ", ");
+        query += transformColumnsToStrings(columns);
         return this;
     }
 
-    private ArrayList<String> transformColumnsToStrings(Enum... columnNames){
+    private String transformColumnsToStrings(Enum... columnNames) {
         ArrayList<String> stringColumnNames = new ArrayList<String>();
         for (Enum column : columnNames) {
             stringColumnNames.add(column.name());
         }
-        return stringColumnNames;
+        String queryWithExtraTrailingComma = "";
+        for (String columnName : stringColumnNames) {
+            queryWithExtraTrailingComma += columnName + ", ";
+        }
+
+        return queryWithExtraTrailingComma.trim().substring(0, queryWithExtraTrailingComma.length()-2);
     }
 
     public OracleSqlGenerator and(Enum columnName) {
@@ -82,12 +86,12 @@ public class OracleSqlGenerator implements SqlGenerator {
     }
 
     public OracleSqlGenerator selectAllByName(Enum[] columnNames) {
-        query += "select " + StringUtils.join(transformColumnsToStrings(columnNames), ", ") + space;
+        query += "select " + transformColumnsToStrings(columnNames) + space;
         return this;
     }
 
     public OracleSqlGenerator parameterizedInsert(String tableName, Enum[] columns) {
-        query += "insert into " + tableName + " (" + StringUtils.join(transformColumnsToStrings(columns), ", ") + ")" + valuesFor(columns);
+        query += "insert into " + tableName + " (" + transformColumnsToStrings(columns) + ")" + valuesFor(columns);
         return this;
     }
 
@@ -128,4 +132,5 @@ public class OracleSqlGenerator implements SqlGenerator {
     public String buildWithoutSemicolon() {
         return query;
     }
+
 }
