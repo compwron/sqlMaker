@@ -18,13 +18,13 @@ public class OracleSqlGeneratorTest {
     @Test
     public void shouldCreateUnderscoreSeparatedAliasesForColumns(){
         String expectedAliases = "barTableName_ColumnA, barTableName_ColumnB";
-        assertThat(generator.underscoreSeparated(BarTable.tableName, BarTable.ColumnA, BarTable.ColumnB).buildWithoutSemicolon(), is(expectedAliases));
+        assertThat(generator.selectAsTableNameUnderscoreColumnName(BarTable.tableName, BarTable.ColumnA, BarTable.ColumnB).buildWithoutSemicolon(), is(expectedAliases));
     }
 
     @Test
     public void shouldCreateUnderscoreSeparatedAliasesForColumnsForAllColumnsInTable(){
         String expectedAliases = "barTableName_ColumnA, barTableName_ColumnB";
-        assertThat(generator.underscoreSeparated(BarTable.tableName, BarTable.values()).buildWithoutSemicolon(), is(expectedAliases));
+        assertThat(generator.selectAsTableNameUnderscoreColumnName(BarTable.tableName, BarTable.values()).buildWithoutSemicolon(), is(expectedAliases));
     }
 
     @Test

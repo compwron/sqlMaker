@@ -106,7 +106,7 @@ public class OracleSqlGenerator implements SqlGenerator {
         return this;
     }
 
-    public OracleSqlGenerator underscoreSeparated(String tableName, Enum... columnNames) {
+    public OracleSqlGenerator selectAsTableNameUnderscoreColumnName(String tableName, Enum... columnNames) {
         for (Enum column : columnNames){
             query += tableName + "_" + column + ", ";
         }
